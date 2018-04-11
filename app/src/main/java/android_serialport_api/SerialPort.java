@@ -17,7 +17,7 @@ public class SerialPort {
     private FileInputStream mFileInputStream;
     private FileOutputStream mFileOutputStream;
 
-    public  SerialPort(File device, int baudrate, int dataBits, int stopBits, char parity) throws SecurityException, IOException {
+    public SerialPort(File device, int baudrate, int dataBits, int stopBits, char parity) throws SecurityException, IOException {
 
         //检查访问权限，如果没有读写权限，进行文件操作，修改文件访问权限
         if (!device.canRead() || !device.canWrite()) {
@@ -36,7 +36,7 @@ public class SerialPort {
             }
         }
 
-        mFd = open(device.getAbsolutePath(), baudrate, dataBits,stopBits,parity);
+        mFd = open(device.getAbsolutePath(), baudrate, dataBits, stopBits, parity);
 
         if (mFd == null) {
             Log.e(TAG, "native open returns null");
@@ -60,14 +60,15 @@ public class SerialPort {
 /**串口有五个重要的参数：串口设备名，波特率，检验位，数据位，停止位
  其中检验位一般默认位NONE,数据位一般默认为8，停止位默认为1*/
     /**
-     * @param path 串口设备的据对路径
+     * @param path     串口设备的据对路径
      * @param baudrate 波特率
      * @param dataBits 数据位
      * @param stopBits 停止位
-     * @param parity 校验位
+     * @param parity   校验位
      */
     private native static FileDescriptor open(String path, int baudrate,
-                                              int dataBits,int stopBits,char parity);
+                                              int dataBits, int stopBits, char parity);
+
     public native void close();
 
     static {//加载jni下的C文件库
